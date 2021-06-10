@@ -1,0 +1,59 @@
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+
+<div id="links">
+<table id="myTable">
+        <tbody><tr>
+            <th>Symbol</th>
+            <th>Bid</th>
+            <th>Ask</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Time(ET)</th>
+        </tr>     
+    </tbody>
+	</table>
+</div>
+
+<script language="javascript" type="text/javascript">
+<!-- var timeout = setTimeout(reloadChat, 15000); -->
+setInterval(function(){ 
+     reload() 
+}, 15000);
+reload();
+function reload() {
+console.log('run');
+$('#myTable').children( 'tr:not(:first)' ).remove();
+$("#data").html("");
+$.ajax({
+  type: 'GET',
+    dataType:"jsonp",
+  url: 'http://data.fixer.io/api/latest?access_key=bb088f7b4d0d62b53553a4510afb4746',
+  success: function (data, status, xhr) {
+    console.log('data: ', data);
+	var ratesdata=data.rates;
+	 $.each(ratesdata, function(key,val){
+	 var date = new Date(data.timestamp);
+		$('#myTable').append(" <tr><td>"+data.base+"/"+key+" </td> <td>"+val+"</td> <td>"+val+"</td> <td>"+val+"</td> <td>"+val+"</td> <td>"+data.date+" "+data.timestamp+"</td></tr>");
+    });
+  }
+});
+}
+</script>
